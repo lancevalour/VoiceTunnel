@@ -2,6 +2,8 @@
     package="yicheng.android.app.voicetunnel"
     android:versionCode="1"
     android:versionName="1.0" >
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -11,7 +13,7 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppBaseTheme" >
         <activity
             android:name="yicheng.android.app.voicetunnel.StartingViewActivity"
             android:screenOrientation="portrait"
@@ -23,10 +25,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="yicheng.android.app.voicetunnel.MainActivity"
+            android:name="yicheng.android.app.voicetunnel.LoginActivity"
             android:screenOrientation="portrait" >
             <intent-filter>
-                <action android:name="yicheng.android.app.voicetunnel.MAINACTIVITY" />
+                <action android:name="yicheng.android.app.voicetunnel.LOGINACTIVITY" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+          <activity
+            android:name="yicheng.android.app.voicetunnel.RegisterActivity"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="yicheng.android.app.voicetunnel.REGISTERACTIVITY" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

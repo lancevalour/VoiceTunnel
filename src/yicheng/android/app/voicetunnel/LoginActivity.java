@@ -38,7 +38,7 @@ public class LoginActivity extends Activity {
 	private final static String APP_ID = "18658";
 	private final static String AUTH_KEY = "z-FTGZRv-5kyxgv";
 	private final static String AUTH_SECRET = "QzxNqCAkJ2KedEH";
-	private QBChatService chatService;
+	public static QBChatService chatService;
 	private Handler handler;
 
 	private Button login_button, forget_password_button, register_button;
@@ -129,55 +129,42 @@ public class LoginActivity extends Activity {
 		setLoginButtonControl();
 		setForgetPasswordButtonControl();
 		setRegisterButtonControl();
-		
+
 	}
 
 	private void setLoginButtonControl() {
 		login_button.setOnClickListener(new View.OnClickListener() {
-		
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				QBAuth.createSession(new QBEntityCallbackImpl<QBSession>() {
-					@Override
-					public void onSuccess(QBSession session, Bundle args) {
-						final QBUser user = new QBUser(login_username_editText
-								.getText().toString(), login_password_editText
-								.getText().toString());
+				final QBUser user = new QBUser(login_username_editText
+						.getText().toString(), login_password_editText
+						.getText().toString());
 
-						QBUsers.signIn(user,
-								new QBEntityCallbackImpl<QBUser>() {
-									@Override
-									public void onSuccess(QBUser user,
-											Bundle args) {
-										// success
-										Log.e("Signing in", "Sign in success");
-										Toast.makeText(getBaseContext(),
-												"Login Success",
-												Toast.LENGTH_SHORT).show();
-									}
+				QBAuth.createSession(user,
+						new QBEntityCallbackImpl<QBSession>() {
+							@Override
+							public void onSuccess(QBSession session, Bundle args) {
 
-									@Override
-									public void onError(List<String> errors) {
-										// error
+								Log.e("Signing in", "Sign in success");
+								Toast.makeText(getBaseContext(),
+										"Login Success", Toast.LENGTH_SHORT)
+										.show();
+								user.setId(session.getUserId());
 
-										for (String s : errors) {
-											Log.e("Signing in", s);
-											Toast.makeText(getBaseContext(), s,
-													Toast.LENGTH_SHORT).show();
-										}
-									}
-								});
-					}
+								loginToChat(user);
+							}
 
-					@Override
-					public void onError(List<String> errors) {
-						AlertDialog.Builder dialog = new AlertDialog.Builder(
-								LoginActivity.this);
-						dialog.setMessage("create session errors: " + errors)
-								.create().show();
-					}
-				});
+							@Override
+							public void onError(List<String> errors) {
+								AlertDialog.Builder dialog = new AlertDialog.Builder(
+										LoginActivity.this);
+								dialog.setMessage(
+										"create session errors: " + errors)
+										.create().show();
+							}
+						});
 			}
 		});
 	}
@@ -224,14 +211,19 @@ public class LoginActivity extends Activity {
 			@Override
 			public void onSuccess() {
 
-				// Start sending presences
-				//
 				try {
 					chatService.startAutoSendPresence(60);
 				}
 				catch (SmackException.NotLoggedInException e) {
 					e.printStackTrace();
 				}
+
+				Log.e("Signing in", "Go to chat view");
+
+				Intent intent = new Intent(
+						"yicheng.android.app.voicetunnel.CHATACTIVITY");
+				startActivity(intent);
+				finish();
 
 			}
 

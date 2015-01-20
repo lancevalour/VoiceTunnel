@@ -2,6 +2,7 @@
     package="yicheng.android.app.voicetunnel"
     android:versionCode="1"
     android:versionName="1.0" >
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
@@ -33,11 +34,20 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-          <activity
+        <activity
             android:name="yicheng.android.app.voicetunnel.RegisterActivity"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="yicheng.android.app.voicetunnel.REGISTERACTIVITY" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="yicheng.android.app.voicetunnel.ChatActivity"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="yicheng.android.app.voicetunnel.CHATACTIVITY" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

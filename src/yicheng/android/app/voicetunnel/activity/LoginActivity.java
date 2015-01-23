@@ -4,9 +4,6 @@ import java.util.List;
 
 import org.jivesoftware.smack.SmackException;
 
-
-
-
 import yicheng.android.app.voicetunnel.R;
 
 import com.quickblox.auth.QBAuth;
@@ -81,17 +78,40 @@ public class LoginActivity extends Activity {
 			setComponentControl();
 
 			setHandlerControl();
-			
 
 			logInToXMPPServer();
 
+		} else {
+			user_login = local_user_information.getString("user_login",
+					"default");
+			user_password = local_user_information.getString("user_password",
+					"default");
 
-		}
-		else {
-			Intent intent = new Intent(
-					"yicheng.android.app.voicetunnel.CHATACTIVITY");
-			startActivity(intent);
-			finish();
+			logInToXMPPServer();
+
+			final QBUser user = new QBUser(user_login, user_password);
+
+			QBAuth.createSession(user, new QBEntityCallbackImpl<QBSession>() {
+				@Override
+				public void onSuccess(QBSession session, Bundle args) {
+
+					Log.e("Signing in", "Sign in success");
+					Toast.makeText(getBaseContext(), "Login Success",
+							Toast.LENGTH_SHORT).show();
+					user.setId(session.getUserId());
+
+					loginToChat(user);
+				}
+
+				@Override
+				public void onError(List<String> errors) {
+					AlertDialog.Builder dialog = new AlertDialog.Builder(
+							LoginActivity.this);
+					dialog.setMessage("create session errors: " + errors)
+							.create().show();
+				}
+			});
+
 		}
 
 	}
@@ -186,18 +206,21 @@ public class LoginActivity extends Activity {
 										"Login Success", Toast.LENGTH_SHORT)
 										.show();
 								user.setId(session.getUserId());
-								
 
-								local_user_editor = local_user_information.edit();
-								local_user_editor.putString("user_login", user.getLogin());
-								local_user_editor.putString("user_password", user.getPassword());
-								local_user_editor.putInt("user_id", user.getId());
-								//local_user_editor.putInt("user_avatar_id", user.getFileId());
-								
-								
-								local_user_editor.putBoolean("isLoggedIn", true);
+								local_user_editor = local_user_information
+										.edit();
+								local_user_editor.putString("user_login",
+										user.getLogin());
+								local_user_editor.putString("user_password",
+										user.getPassword());
+								local_user_editor.putInt("user_id",
+										user.getId());
+								// local_user_editor.putInt("user_avatar_id",
+								// user.getFileId());
+
+								local_user_editor
+										.putBoolean("isLoggedIn", true);
 								local_user_editor.commit();
-								
 
 								loginToChat(user);
 							}
@@ -259,8 +282,7 @@ public class LoginActivity extends Activity {
 
 				try {
 					chatService.startAutoSendPresence(60);
-				}
-				catch (SmackException.NotLoggedInException e) {
+				} catch (SmackException.NotLoggedInException e) {
 					e.printStackTrace();
 				}
 

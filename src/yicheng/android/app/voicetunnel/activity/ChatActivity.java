@@ -1,12 +1,14 @@
 package yicheng.android.app.voicetunnel.activity;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.XMPPException;
 
 import yicheng.android.app.voicetunnel.R;
+import yicheng.android.app.voicetunnel.adapter.ChatHistoryListViewAdapter;
 
 import com.quickblox.chat.QBChat;
 import com.quickblox.chat.QBChatService;
@@ -30,6 +32,7 @@ import com.quickblox.users.result.QBUserPagedResult;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
@@ -48,15 +51,22 @@ public class ChatActivity extends Activity {
 
 	private Button send_message_button;
 	private EditText send_message_editText;
-	private TextView chat_history_textView;
+	private ListView chat_history_listView;
 	private RelativeLayout chat_activity_layout;
 
 	private ArrayList<QBChatMessage> history;
 	private ArrayList<QBDialog> dialogList;
-	
+	private ChatHistoryListViewAdapter listViewAdapter;
+
 	private QBPrivateChat privateChat;
-	private Integer occupantID; 
-	
+	private Integer occupantID;
+
+	private SharedPreferences local_user_information;
+	private SharedPreferences.Editor local_user_editor;
+	private String PREFS_NAME = "LocalUserInfo";
+
+	private Integer user_id;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -64,20 +74,24 @@ public class ChatActivity extends Activity {
 		setContentView(R.layout.chat_activity_layout);
 
 		initiateComponents();
-		initiatePrivateChat();
-		
+
 		loadChatHistory();
 		
-		setComponentControl();
+		initiatePrivateChat();
 		
-	
+		setComponentControl();
+
 	}
 
 	private void initiateComponents() {
 		send_message_button = (Button) findViewById(R.id.send_message_button);
 		send_message_editText = (EditText) findViewById(R.id.send_message_editText);
-		chat_history_textView = (TextView) findViewById(R.id.chat_history_textView);
+		chat_history_listView = (ListView) findViewById(R.id.chat_history_listView);
 		chat_activity_layout = (RelativeLayout) findViewById(R.id.chat_activity_layout);
+
+		local_user_information = this.getSharedPreferences(PREFS_NAME, 0);
+		user_id = local_user_information.getInt("user_id", 0);
+
 	}
 
 	private void setComponentControl() {
@@ -87,11 +101,11 @@ public class ChatActivity extends Activity {
 
 	QBRequestGetBuilder customObjectRequestBuilder;
 
-	private void initiatePrivateChat(){
+	private void initiatePrivateChat() {
 		QBPrivateChatManager privateChatManager = QBChatService.getInstance()
 				.getPrivateChatManager();
 
-	 privateChat = privateChatManager.getChat(2217995);
+		privateChat = privateChatManager.getChat(2217995);
 		if (privateChat == null) {
 
 			privateChat = privateChatManager.createChat(2217995,
@@ -108,8 +122,7 @@ public class ChatActivity extends Activity {
 						public void processMessage(QBPrivateChat arg0,
 								QBChatMessage arg1) {
 							// TODO Auto-generated method stub
-							chat_history_textView.requestFocus();
-							chat_history_textView.setText(chat_history_textView.getText().toString()+"\n" + arg1.getBody());
+							showMessage(arg1);
 						}
 
 						@Override
@@ -130,7 +143,7 @@ public class ChatActivity extends Activity {
 		}
 
 	}
-	
+
 	private void loadChatHistory() {
 		loadAllDialogs();
 	}
@@ -150,7 +163,15 @@ public class ChatActivity extends Activity {
 							Log.e("chat history", message.getBody());
 							s += message.getBody() + "\n";
 						}
-						chat_history_textView.setText(s);
+						listViewAdapter = new ChatHistoryListViewAdapter(
+								ChatActivity.this,
+								new ArrayList<QBChatMessage>());
+						chat_history_listView.setAdapter(listViewAdapter);
+
+						for (int i = messages.size() - 1; i >= 0; --i) {
+							QBChatMessage msg = messages.get(i);
+							showMessage(msg);
+						}
 					}
 
 					@Override
@@ -163,6 +184,23 @@ public class ChatActivity extends Activity {
 				});
 	}
 
+	public void showMessage(QBChatMessage message) {
+		listViewAdapter.add(message);
+
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				listViewAdapter.notifyDataSetChanged();
+				scrollDown();
+			}
+		});
+	}
+
+	private void scrollDown() {
+		chat_history_listView
+				.setSelection(chat_history_listView.getCount() - 1);
+	}
+
 	private void loadAllDialogs() {
 		customObjectRequestBuilder = new QBRequestGetBuilder();
 		customObjectRequestBuilder.setPagesLimit(100);
@@ -173,7 +211,7 @@ public class ChatActivity extends Activity {
 					public void onSuccess(final ArrayList<QBDialog> dialogs,
 							Bundle args) {
 						dialogList = dialogs;
-						
+
 						Log.e("dialog", dialogList.get(0).getDialogId());
 						loadChatHistoryInDialog();
 					}
@@ -188,15 +226,17 @@ public class ChatActivity extends Activity {
 				});
 	}
 
-	private Integer getOccupantID(){
-	/*	for (Integer i : dialogList.get(0).getOccupants()){
-			if (i != ){
+	private Integer getOccupantID() {
+
+		for (Integer i : dialogList.get(0).getOccupants()) {
+			if (i != user_id) {
 				return i;
 			}
-		}*/
+		}
+
 		return 0;
 	}
-	
+
 	private void setSendMessageButtonControl() {
 		send_message_button.setOnClickListener(new View.OnClickListener() {
 
@@ -205,22 +245,25 @@ public class ChatActivity extends Activity {
 				// TODO Auto-generated method stub
 
 				sendMessage(send_message_editText.getText().toString());
-				chat_history_textView.setText(chat_history_textView.getText().toString() + "\n" + send_message_editText.getText().toString());
+
 				send_message_editText.setText("");
-				
+
 			}
 		});
 	}
 
 	private void sendMessage(String message) {
 
-	
 		try {
 
 			QBChatMessage chatMessage = new QBChatMessage();
 			chatMessage.setBody(message);
 			chatMessage.setProperty("save_to_history", "1");
+			chatMessage.setDateSent(new Date().getTime() / 100);
+
 			privateChat.sendMessage(chatMessage);
+
+			showMessage(chatMessage);
 
 		} catch (XMPPException e) {
 
@@ -229,7 +272,7 @@ public class ChatActivity extends Activity {
 		}
 
 	}
-	
+
 	private void setTouchHideKeyboardControl() {
 		chat_activity_layout.setOnTouchListener(new View.OnTouchListener() {
 
@@ -241,7 +284,7 @@ public class ChatActivity extends Activity {
 			}
 		});
 
-		chat_history_textView.setOnTouchListener(new View.OnTouchListener() {
+		chat_history_listView.setOnTouchListener(new View.OnTouchListener() {
 
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
@@ -262,14 +305,13 @@ public class ChatActivity extends Activity {
 		});
 
 	}
-	
+
 	private void hideKeyboard() {
 		if (getCurrentFocus() != null) {
 			InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 			imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
 		}
 	}
-
 
 	@Override
 	public void onBackPressed() {

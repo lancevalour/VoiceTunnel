@@ -76,9 +76,7 @@ public class ChatActivity extends Activity {
 		initiateComponents();
 
 		loadChatHistory();
-		
-		initiatePrivateChat();
-		
+
 		setComponentControl();
 
 	}
@@ -105,10 +103,10 @@ public class ChatActivity extends Activity {
 		QBPrivateChatManager privateChatManager = QBChatService.getInstance()
 				.getPrivateChatManager();
 
-		privateChat = privateChatManager.getChat(2217995);
+		privateChat = privateChatManager.getChat(occupantID);
 		if (privateChat == null) {
 
-			privateChat = privateChatManager.createChat(2217995,
+			privateChat = privateChatManager.createChat(occupantID,
 					new QBMessageListener<QBPrivateChat>() {
 
 						@Override
@@ -172,6 +170,8 @@ public class ChatActivity extends Activity {
 							QBChatMessage msg = messages.get(i);
 							showMessage(msg);
 						}
+						initiatePrivateChat();
+
 					}
 
 					@Override
@@ -211,6 +211,8 @@ public class ChatActivity extends Activity {
 					public void onSuccess(final ArrayList<QBDialog> dialogs,
 							Bundle args) {
 						dialogList = dialogs;
+
+						occupantID = getOccupantID();
 
 						Log.e("dialog", dialogList.get(0).getDialogId());
 						loadChatHistoryInDialog();

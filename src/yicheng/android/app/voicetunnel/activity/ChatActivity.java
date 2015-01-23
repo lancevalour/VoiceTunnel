@@ -46,6 +46,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ChatActivity extends Activity {
 
@@ -89,6 +90,7 @@ public class ChatActivity extends Activity {
 
 		local_user_information = this.getSharedPreferences(PREFS_NAME, 0);
 		user_id = local_user_information.getInt("user_id", 0);
+		
 
 	}
 
@@ -213,6 +215,8 @@ public class ChatActivity extends Activity {
 						dialogList = dialogs;
 
 						occupantID = getOccupantID();
+						
+						Toast.makeText(ChatActivity.this, ""+occupantID, Toast.LENGTH_SHORT).show();
 
 						Log.e("dialog", dialogList.get(0).getDialogId());
 						loadChatHistoryInDialog();
@@ -229,9 +233,10 @@ public class ChatActivity extends Activity {
 	}
 
 	private Integer getOccupantID() {
-
+	
+		
 		for (Integer i : dialogList.get(0).getOccupants()) {
-			if (i != user_id) {
+			if (!i.equals(user_id)) {
 				return i;
 			}
 		}

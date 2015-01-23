@@ -87,8 +87,17 @@ public class LoginActivity extends Activity {
 			user_password = local_user_information.getString("user_password",
 					"default");
 
-			logInToXMPPServer();
+			QBChatService.setDebugEnabled(true);
+			QBSettings.getInstance().fastConfigInit(
+					LoginActivity.APP_ID, LoginActivity.AUTH_KEY,
+					LoginActivity.AUTH_SECRET);
 
+			if (!QBChatService.isInitialized()) {
+				QBChatService.init(LoginActivity.this);
+			}
+
+			chatService = QBChatService.getInstance();
+			
 			final QBUser user = new QBUser(user_login, user_password);
 
 			QBAuth.createSession(user, new QBEntityCallbackImpl<QBSession>() {
@@ -105,10 +114,10 @@ public class LoginActivity extends Activity {
 
 				@Override
 				public void onError(List<String> errors) {
-					AlertDialog.Builder dialog = new AlertDialog.Builder(
+					/*AlertDialog.Builder dialog = new AlertDialog.Builder(
 							LoginActivity.this);
 					dialog.setMessage("create session errors: " + errors)
-							.create().show();
+							.create().show();*/
 				}
 			});
 

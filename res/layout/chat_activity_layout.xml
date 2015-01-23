@@ -1,10 +1,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/drawer_layout"
+
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:id="@+id/chat_activity_layout" >
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/chat_history_textView"
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
@@ -17,6 +18,7 @@
         android:weightSum="1" >
 
         <EditText
+            android:layout_marginLeft="10dp"
             android:id="@+id/send_message_editText"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
@@ -24,6 +26,7 @@
             android:background="@drawable/edittext_background" />
 
         <Button
+            android:layout_marginRight="5dp"
             android:id="@+id/send_message_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

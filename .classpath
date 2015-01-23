@@ -2,15 +2,13 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
-	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
-	<classpathentry exported="true" kind="lib" path="C:/Applications/quickblox-android-sdk-master/jars/quickblox-android-sdk-chat-2.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="C:/Applications/quickblox-android-sdk-master/jars/quickblox-android-sdk-content-2.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="C:/Applications/quickblox-android-sdk-master/jars/quickblox-android-sdk-core-2.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="C:/Applications/quickblox-android-sdk-master/jars/quickblox-android-sdk-location-2.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="C:/Applications/quickblox-android-sdk-master/jars/quickblox-android-sdk-messages-2.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="C:/Applications/quickblox-android-sdk-master/jars/quickblox-android-sdk-videochat-2.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="C:/Applications/quickblox-android-sdk-master/jars/quickblox-android-sdk-videochat-webrtc-2.0.jar"/>
+	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/Yicheng/workspace/quickblox-android-sdk-master/jars/quickblox-android-sdk-chat-2.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/Yicheng/workspace/quickblox-android-sdk-master/jars/quickblox-android-sdk-core-2.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/Yicheng/workspace/quickblox-android-sdk-master/jars/quickblox-android-sdk-messages-2.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/Yicheng/workspace/quickblox-android-sdk-master/jars/quickblox-android-sdk-videochat-2.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/Yicheng/workspace/quickblox-android-sdk-master/jars/quickblox-android-sdk-videochat-webrtc-2.1.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

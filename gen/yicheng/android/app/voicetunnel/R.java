@@ -20,7 +20,8 @@ public final class R {
         public static final int ic_launcher=0x7f020002;
     }
     public static final class id {
-        public static final int drawer_layout=0x7f070000;
+        public static final int chat_activity_layout=0x7f070000;
+        public static final int chat_history_textView=0x7f070001;
         public static final int explore_button=0x7f07000b;
         public static final int forget_password_button=0x7f070009;
         public static final int login_activity_layout=0x7f070004;
@@ -42,7 +43,6 @@ public final class R {
         public static final int register_username_editText=0x7f070011;
         public static final int send_message_button=0x7f070003;
         public static final int send_message_editText=0x7f070002;
-        public static final int textView=0x7f070001;
     }
     public static final class layout {
         public static final int chat_activity_layout=0x7f030000;

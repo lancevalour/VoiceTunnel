@@ -1,6 +1,8 @@
-package yicheng.android.app.voicetunnel;
+package yicheng.android.app.voicetunnel.activity;
 
 import java.util.List;
+
+import yicheng.android.app.voicetunnel.R;
 
 import com.quickblox.auth.QBAuth;
 import com.quickblox.auth.model.QBSession;

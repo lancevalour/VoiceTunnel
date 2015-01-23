@@ -1,4 +1,6 @@
-package yicheng.android.app.voicetunnel;
+package yicheng.android.app.voicetunnel.activity;
+
+import yicheng.android.app.voicetunnel.R;
 
 import com.quickblox.chat.QBChatService;
 import com.quickblox.core.QBSettings;
@@ -27,6 +29,7 @@ public class StartingViewActivity extends Activity {
 				Intent main_view_intent = new Intent(
 						"yicheng.android.app.voicetunnel.LOGINACTIVITY");
 				overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+				
 				startActivity(main_view_intent);
 
 			}

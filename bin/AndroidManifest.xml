@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="11"
         android:targetSdkVersion="21" />
 
     <application
@@ -16,7 +16,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppBaseTheme" >
         <activity
-            android:name="yicheng.android.app.voicetunnel.StartingViewActivity"
+            android:name="yicheng.android.app.voicetunnel.activity.StartingViewActivity"
             android:screenOrientation="portrait"
             android:theme="@style/startingTheme" >
             <intent-filter>
@@ -26,7 +26,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="yicheng.android.app.voicetunnel.LoginActivity"
+            android:name="yicheng.android.app.voicetunnel.activity.LoginActivity"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="yicheng.android.app.voicetunnel.LOGINACTIVITY" />
@@ -35,7 +35,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="yicheng.android.app.voicetunnel.RegisterActivity"
+            android:name="yicheng.android.app.voicetunnel.activity.RegisterActivity"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="yicheng.android.app.voicetunnel.REGISTERACTIVITY" />
@@ -44,7 +44,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="yicheng.android.app.voicetunnel.ChatActivity"
+            android:name="yicheng.android.app.voicetunnel.activity.ChatActivity"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="yicheng.android.app.voicetunnel.CHATACTIVITY" />

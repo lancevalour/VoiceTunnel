@@ -1,8 +1,13 @@
-package yicheng.android.app.voicetunnel;
+package yicheng.android.app.voicetunnel.activity;
 
 import java.util.List;
 
 import org.jivesoftware.smack.SmackException;
+
+
+
+
+import yicheng.android.app.voicetunnel.R;
 
 import com.quickblox.auth.QBAuth;
 import com.quickblox.auth.model.QBSession;
@@ -20,6 +25,7 @@ import com.quickblox.users.result.QBUserResult;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -46,6 +52,13 @@ public class LoginActivity extends Activity {
 	private LinearLayout login_loading_layout;
 	private RelativeLayout login_activity_layout;
 
+	private String user_login, user_password, user_email;
+	private Integer user_id;
+
+	private SharedPreferences local_user_information;
+	private SharedPreferences.Editor local_user_editor;
+	private String PREFS_NAME = "LocalUserInfo";
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -53,13 +66,33 @@ public class LoginActivity extends Activity {
 		overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 		setContentView(R.layout.login_activity_layout);
 
-		initiateComponents();
+		autoLogin();
 
-		setComponentControl();
+	}
 
-		setHandlerControl();
+	private void autoLogin() {
+		local_user_information = this.getSharedPreferences(PREFS_NAME, 0);
+		boolean isLoggedIn = local_user_information.getBoolean("isLoggedIn",
+				false);
+		if (!isLoggedIn) {
 
-		logInToXMPPServer();
+			initiateComponents();
+
+			setComponentControl();
+
+			setHandlerControl();
+			
+
+			logInToXMPPServer();
+
+
+		}
+		else {
+			Intent intent = new Intent(
+					"yicheng.android.app.voicetunnel.CHATACTIVITY");
+			startActivity(intent);
+			finish();
+		}
 
 	}
 
@@ -71,6 +104,7 @@ public class LoginActivity extends Activity {
 		register_button = (Button) findViewById(R.id.register_button);
 		login_loading_layout = (LinearLayout) findViewById(R.id.login_loading_layout);
 		login_activity_layout = (RelativeLayout) findViewById(R.id.login_activity_layout);
+
 	}
 
 	private void setTouchHideKeyboardControl() {
@@ -152,6 +186,18 @@ public class LoginActivity extends Activity {
 										"Login Success", Toast.LENGTH_SHORT)
 										.show();
 								user.setId(session.getUserId());
+								
+
+								local_user_editor = local_user_information.edit();
+								local_user_editor.putString("user_login", user.getLogin());
+								local_user_editor.putString("user_password", user.getPassword());
+								local_user_editor.putInt("user_id", user.getId());
+								//local_user_editor.putInt("user_avatar_id", user.getFileId());
+								
+								
+								local_user_editor.putBoolean("isLoggedIn", true);
+								local_user_editor.commit();
+								
 
 								loginToChat(user);
 							}

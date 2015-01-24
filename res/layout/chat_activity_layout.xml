@@ -13,26 +13,18 @@
             android:id="@+id/setting_button"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
-            android:text="setting"
             android:layout_alignParentLeft="true"
-            android:layout_marginLeft="10dp" />
+            android:layout_marginLeft="10dp"
+            android:text="setting" />
 
         <Button
             android:id="@+id/logout_button"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
-            android:text="logout"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp" />
+            android:layout_marginRight="10dp"
+            android:text="logout" />
     </RelativeLayout>
-
-    <ListView
-        android:id="@+id/chat_history_listView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/chat_activity_header_layout"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="55dp" />
 
     <LinearLayout
         android:id="@+id/send_message_layout"
@@ -58,5 +50,21 @@
             android:layout_weight="0.1"
             android:text="send" />
     </LinearLayout>
+
+    <ListView
+        android:id="@+id/chat_history_listView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/send_message_layout"
+        android:layout_below="@id/chat_activity_header_layout"
+        android:layout_centerHorizontal="true"
+        android:divider="@null"
+        android:fadeScrollbars="true"
+        android:footerDividersEnabled="true"
+        android:headerDividersEnabled="true"
+        android:listSelector="@android:color/transparent"
+        android:overScrollMode="always"
+        android:scrollbarThumbVertical="@drawable/list_view_scrollbar"
+        android:transcriptMode="alwaysScroll" />
 
 </RelativeLayout>

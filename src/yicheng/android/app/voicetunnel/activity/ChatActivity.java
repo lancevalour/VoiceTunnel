@@ -168,7 +168,7 @@ public class ChatActivity extends Activity {
 								new ArrayList<QBChatMessage>());
 						chat_history_listView.setAdapter(listViewAdapter);
 
-						for (int i = messages.size() - 1; i >= 0; --i) {
+						for (int i = 0; i <  messages.size(); i++) {
 							QBChatMessage msg = messages.get(i);
 							showMessage(msg);
 						}
@@ -206,7 +206,8 @@ public class ChatActivity extends Activity {
 	private void loadAllDialogs() {
 		customObjectRequestBuilder = new QBRequestGetBuilder();
 		customObjectRequestBuilder.setPagesLimit(100);
-
+		//customObjectRequestBuilder.sortDesc("date_sent");
+		
 		QBChatService.getChatDialogs(null, customObjectRequestBuilder,
 				new QBEntityCallbackImpl<ArrayList<QBDialog>>() {
 					@Override

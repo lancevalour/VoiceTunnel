@@ -6,11 +6,15 @@ import java.util.List;
 import yicheng.android.app.voicetunnel.R;
 
 import com.quickblox.chat.model.QBChatMessage;
+import com.quickblox.core.QBEntityCallback;
+import com.quickblox.core.exception.QBResponseException;
+import com.quickblox.users.QBUsers;
 import com.quickblox.users.model.QBUser;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,7 +43,8 @@ public class ChatHistoryListViewAdapter extends BaseAdapter {
 		// TODO Auto-generated method stub
 		if (this.chatMessages != null) {
 			return this.chatMessages.size();
-		} else {
+		}
+		else {
 			return 0;
 		}
 	}
@@ -49,7 +54,8 @@ public class ChatHistoryListViewAdapter extends BaseAdapter {
 		// TODO Auto-generated method stub
 		if (this.chatMessages != null) {
 			return this.chatMessages.get(position);
-		} else {
+		}
+		else {
 			return null;
 		}
 	}
@@ -81,7 +87,11 @@ public class ChatHistoryListViewAdapter extends BaseAdapter {
 					R.layout.chat_history_listview_listitem_layout, null);
 			holder = createViewHolder(convertView);
 			convertView.setTag(holder);
-		} else {
+
+		
+
+		}
+		else {
 			holder = (MessageViewHolder) convertView.getTag();
 		}
 
@@ -94,11 +104,14 @@ public class ChatHistoryListViewAdapter extends BaseAdapter {
 
 		setMessageLayoutAlignment(holder, isOutgoing);
 
+		// TODO Auto-generated method stub
+
 		holder.message_textView.setText(chatMessage.getBody());
 		if (chatMessage.getSenderId() != null) {
 			holder.message_time_textView.setText(chatMessage.getSenderId()
 					+ ": " + getMessageTimeText(chatMessage));
-		} else {
+		}
+		else {
 			holder.message_time_textView
 					.setText(getMessageTimeText(chatMessage));
 		}
@@ -110,7 +123,7 @@ public class ChatHistoryListViewAdapter extends BaseAdapter {
 			boolean isOutgoing) {
 		if (!isOutgoing) {
 			holder.message_content_background_layout
-					.setBackgroundResource(R.drawable.incoming_message_bg);
+					.setBackgroundResource(R.drawable.incoming_message_background);
 
 			LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) holder.message_content_background_layout
 					.getLayoutParams();
@@ -122,9 +135,11 @@ public class ChatHistoryListViewAdapter extends BaseAdapter {
 					.getLayoutParams();
 			lp.addRule(RelativeLayout.ALIGN_PARENT_LEFT, 0);
 			lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+			lp.setMargins(0, 0, 20, 0);
 			holder.message_background_layout.setLayoutParams(lp);
 			layoutParams = (LinearLayout.LayoutParams) holder.message_textView
 					.getLayoutParams();
+			
 			layoutParams.gravity = Gravity.RIGHT;
 			holder.message_textView.setLayoutParams(layoutParams);
 
@@ -132,20 +147,23 @@ public class ChatHistoryListViewAdapter extends BaseAdapter {
 					.getLayoutParams();
 			layoutParams.gravity = Gravity.RIGHT;
 			holder.message_time_textView.setLayoutParams(layoutParams);
-		} else {
+		}
+		else {
 			holder.message_content_background_layout
-					.setBackgroundResource(R.drawable.outgoing_message_bg);
+					.setBackgroundResource(R.drawable.outgoing_message_background);
 
 			LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) holder.message_content_background_layout
 					.getLayoutParams();
 			layoutParams.gravity = Gravity.LEFT;
 			holder.message_content_background_layout
 					.setLayoutParams(layoutParams);
+			
 
 			RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) holder.message_background_layout
 					.getLayoutParams();
 			lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 0);
 			lp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+			lp.setMargins(20, 0, 0, 0);
 			holder.message_background_layout.setLayoutParams(lp);
 			layoutParams = (LinearLayout.LayoutParams) holder.message_textView
 					.getLayoutParams();
@@ -225,7 +243,8 @@ public class ChatHistoryListViewAdapter extends BaseAdapter {
 			}
 			res.append(" ago");
 			return res.toString();
-		} else {
+		}
+		else {
 			return "0 second ago";
 		}
 	}

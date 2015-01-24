@@ -12,7 +12,7 @@
         -->
     </style>
     
-      <style name="startingTheme" parent="@android:style/Theme">
+      <style name="startingTheme" parent="android:Theme.Holo.Light.NoActionBar">
         <item name="android:background">#E16138</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowActionBar">false</item>
